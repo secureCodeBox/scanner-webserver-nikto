@@ -5,3 +5,11 @@ jobs:
   include:
     - stage: test
       script: rake test
+    - stage: build docker image
+      services:
+      - docker
+      script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker build -t securecodebox/nikto:oss .
+      - docker images
+      - docker push securecodebox/nikto:oss
