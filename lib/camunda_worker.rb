@@ -46,92 +46,86 @@ class CamundaWorker
   end
 
   def tick
-    tasks = fetch_and_lock_task
+    task = fetch_and_lock_task
 
-    unless tasks.empty?
+    unless task.nil?
       @started_tasks = @started_tasks.succ
 
-      task = tasks[0]
+      job_id = task.dig('jobId')
+      targets = task.dig('targets')
 
-      $logger.info "Started scan #{task.dig('id')}"
+      $logger.info "Started scan #{job_id}"
 
       begin
-        result = self.work(tasks[0])
+        result = self.work(job_id, targets)
 
         @completed_tasks = @completed_tasks.succ
 
-        self.complete_task task.dig('id'), result
+        self.complete_task job_id, result
 
-        $logger.info "Completed scan #{task.dig('id')}"
+        $logger.info "Completed scan #{job_id}"
       rescue => err
-        $logger.warn "Failed to perform scan #{task.dig('id')}"
+        $logger.warn "Failed to perform scan #{job_id}"
         $logger.warn err
+        $logger.warn err.backtrace
         $logger.warn "Task will be unlocked for further tries."
 
         @failed_tasks = @failed_tasks.succ
 
-        self.fail_task task.dig('id')
+        self.fail_task job_id
       end
     end
   end
 
-  def work(task)
+# @param [String] job_id
+# @param [Array] targets
+  def work(job_id, targets)
     $logger.error "You should override the work method of the CamundaWorker with a proper implementation!"
   end
 
   def fetch_and_lock_task
     $logger.debug "fetching task"
 
-    payload = {
-        workerId: @worker_id,
-        maxTasks: 1,
-        topics: [
-            {
-                topicName: @topic,
-                variables: @variables,
-                lockDuration: @task_lock_duration
-            }
-        ]
-    }
+    begin
+      res = self.http_post("#{@camunda_url}/box/jobs/lock/#{@topic}/#{@worker_id}", "")
 
-    $logger.debug "#{@camunda_url}/external-task/fetchAndLock"
-    $logger.debug payload.to_json
-
-    JSON.parse(self.http_post("#{@camunda_url}/external-task/fetchAndLock", payload.to_json))
+      if res.nil?
+        nil
+      else
+        JSON.parse(res)
+      end
+    rescue => err
+      $logger.error err
+      nil
+    end
   end
 
-  def fail_task(task_id)
-    result = self.http_post("#{@camunda_url}/external-task/#{task_id}/unlock")
+  def fail_task(job_id)
+    result = self.http_post("#{@camunda_url}/rest/external-task/#{job_id}/unlock")
     $logger.debug "unlocked task: " + result.to_str
     result
   end
 
-  def complete_task(task_id, variables)
-    payload = {
-        workerId: @worker_id,
-        variables: variables
-    }
-
+  def complete_task(job_id, payload)
     $logger.debug "completing task: #{payload.to_json}"
 
-    result = self.http_post("#{@camunda_url}/external-task/#{task_id}/complete", payload.to_json)
+    result = self.http_post("#{@camunda_url}/box/jobs/#{job_id}/result", payload.to_json)
     $logger.debug "completed task: #{result.to_str}"
     result
   end
 
-
   def http_post(url, payload = "")
-    request = self.create_post_request(url, payload)
-
     begin
+      request = self.create_post_request(url, payload)
+
       request.execute do |response, request, result|
         case response.code
-        when 200
+        when 200, 201
           $logger.debug 'success ' + response.code.to_s
           return response
         when 204
           $logger.debug 'success ' + response.code.to_s
-          return ''
+          return nil
         else
           $logger.debug "Invalid response #{response.to_str} received."
           fail "Code #{response.code}: Invalid response #{response.to_str} received."
