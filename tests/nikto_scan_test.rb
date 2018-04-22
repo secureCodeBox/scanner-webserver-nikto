@@ -51,7 +51,10 @@ EOM
                          name: 'Allowed HTTP Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS ',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-0',
+                         reference: {
+                             id: 'OSVDB-0',
+                             source:  'OSVDB-0',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/",
                          attributes: {
@@ -82,7 +85,10 @@ EOM
                          name: 'Allowed HTTP Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS ',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-0',
+                         reference: {
+                             id: 'OSVDB-0',
+                             source: 'OSVDB-0',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/",
                          attributes: {
@@ -98,7 +104,10 @@ EOM
                          name: 'HTTP method (\'Allow\' Header): \'PUT\' method could allow clients to save files on the web server.',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-397',
+                         reference: {
+                             id: 'OSVDB-397',
+                             source:  'OSVDB-397',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/",
                          attributes: {
@@ -114,7 +123,10 @@ EOM
                          name: '/test.html: This might be interesting...',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-3092',
+                         reference: {
+                             id: 'OSVDB-3092',
+                             source:  'OSVDB-3092',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/test.html",
                          attributes: {
