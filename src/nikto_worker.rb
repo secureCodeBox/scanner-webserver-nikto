@@ -7,17 +7,23 @@ require_relative "./nikto_configuration"
 
 class NiktoWorker < CamundaWorker
   def work(job_id, targets)
-    config = NiktoConfiguration.new
-    config.nikto_target = targets[0].dig('location')
-    config.nikto_ports = targets[0].dig('attributes', 'NIKTO_PORTS')
-    config.nikto_parameter = targets[0].dig('attributes', 'NIKTO_PARAMETER')
+    configs = targets.map {|process_target|
+      config = NiktoConfiguration.new
+      config.nikto_target = process_target.dig('location')
+      config.nikto_ports = process_target.dig('attributes', 'NIKTO_PORTS')
+      config.nikto_parameter = process_target.dig('attributes', 'NIKTO_PARAMETER')
+      config
+    }
 
-    scan = NiktoScan.new(job_id, config)
-    scan.start
+    scans = configs.map { |config|
+      scan = NiktoScan.new(job_id, config)
+      scan.start
+      scan
+    }
 
     {
-        findings: scan.results,
-        raw_findings: scan.raw_results,
+        findings: scans.flat_map{|scan| scan.results},
+        raw_findings: scans.map{|scan| scan.raw_results},
         scannerId: @worker_id.to_s,
         scannerType: 'nikto'
     }
