@@ -8,7 +8,7 @@ set :environment, :production
 client = NiktoWorker.new(
     'http://localhost:8080/rest',
     'nikto_webserverscan',
-    ['NIKTO_TARGET', 'NIKTO_PORTS', 'NIKTO_PARAMETER']
+    ['PROCESS_TARGETS']
 )
 
 get '/' do

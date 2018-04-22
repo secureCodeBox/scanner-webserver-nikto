@@ -1,4 +1,6 @@
 require 'csv'
+require 'securerandom'
+
 require_relative './nikto_command_builder'
 
 class NiktoExecutionService
@@ -10,12 +12,13 @@ end
 class NiktoScan
   attr_reader :raw_results
   attr_reader :results
-  def initialize(scan_id, config, nikto_execution_service = NiktoExecutionService.new)
+  def initialize(scan_id, config, nikto_execution_service = NiktoExecutionService.new, uuid_provider = SecureRandom)
     @scan_id = scan_id
     @config = config
     @filename = "/tmp/report-#{@scan_id}.csv"
     @command_builder = NiktoCommandBuilder.new(@config, @filename)
     @nikto_execution_service = nikto_execution_service
+    @uuid_provider = uuid_provider
   end
 
   def start
@@ -33,11 +36,14 @@ class NiktoScan
       row.length == 7 && !row[6].empty?
     end.map do |row|
       {
-        id: '12345678',
+        id: @uuid_provider.uuid,
         name: row[6],
         description: '',
         osi_layer: 'APPLICATION',
-        reference: row[3],
+        reference: {
+            id: row[3],
+            source: row[3]
+        },
         severity: 'INFORMATIONAL',
         location: "#{row[0]}:#{row[2]}#{row[5]}",
         attributes: {

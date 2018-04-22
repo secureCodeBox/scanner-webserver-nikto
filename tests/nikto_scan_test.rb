@@ -12,6 +12,12 @@ class MockExecutionService
   end
 end
 
+class FakeUuidProvider
+  def uuid
+    '49bf7fd3-8512-4d73-a28f-608e493cd726'
+  end
+end
+
 class NiktoScanTest < Test::Unit::TestCase
 
   # Called before every test method runs. Can be used
@@ -38,14 +44,17 @@ class NiktoScanTest < Test::Unit::TestCase
 "localhost","127.0.0.1","8080","OSVDB-0","OPTIONS","/","Allowed HTTP Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS "
 EOM
 
-    @nikto_scan = NiktoScan.new('12345678', @config, MockExecutionService.new(large_result))
+    @nikto_scan = NiktoScan.new('12345678', @config, MockExecutionService.new(large_result), FakeUuidProvider.new)
     assert_equal([
                      {
-                         id: '12345678',
+                         id: '49bf7fd3-8512-4d73-a28f-608e493cd726',
                          name: 'Allowed HTTP Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS ',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-0',
+                         reference: {
+                             id: 'OSVDB-0',
+                             source:  'OSVDB-0',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/",
                          attributes: {
@@ -69,14 +78,17 @@ EOM
 "localhost","127.0.0.1","8080","OSVDB-3092","GET","/test.html","/test.html: This might be interesting..."
 EOM
 
-    @nikto_scan = NiktoScan.new('12345678', @config, MockExecutionService.new(large_result))
+    @nikto_scan = NiktoScan.new('12345678', @config, MockExecutionService.new(large_result), FakeUuidProvider.new)
     assert_equal([
                      {
-                         id: '12345678',
+                         id: '49bf7fd3-8512-4d73-a28f-608e493cd726',
                          name: 'Allowed HTTP Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS ',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-0',
+                         reference: {
+                             id: 'OSVDB-0',
+                             source: 'OSVDB-0',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/",
                          attributes: {
@@ -88,11 +100,14 @@ EOM
                          }
                      },
                      {
-                         id: '12345678',
+                         id: '49bf7fd3-8512-4d73-a28f-608e493cd726',
                          name: 'HTTP method (\'Allow\' Header): \'PUT\' method could allow clients to save files on the web server.',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-397',
+                         reference: {
+                             id: 'OSVDB-397',
+                             source:  'OSVDB-397',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/",
                          attributes: {
@@ -104,11 +119,14 @@ EOM
                          }
                      },
                      {
-                         id: '12345678',
+                         id: '49bf7fd3-8512-4d73-a28f-608e493cd726',
                          name: '/test.html: This might be interesting...',
                          description: '',
                          osi_layer: 'APPLICATION',
-                         reference: 'OSVDB-3092',
+                         reference: {
+                             id: 'OSVDB-3092',
+                             source:  'OSVDB-3092',
+                         },
                          severity: 'INFORMATIONAL',
                          location: "localhost:8080/test.html",
                          attributes: {
