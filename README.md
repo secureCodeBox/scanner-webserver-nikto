@@ -1,4 +1,7 @@
-# About scanner-webserver-nikto
+![Build Status](https://travis-ci.com/secureCodeBox/scanner-webserver-nikto.svg?token=2Rsf2E9Bq3FduSxRf6tz&branch=develop)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+# About
 
 scanner-webserver-nikto is a self contained µService utilizing the Nikto Webserverscanner for the SecureCodeBox.
 
