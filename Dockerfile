@@ -14,6 +14,9 @@ RUN wget https://github.com/sullo/nikto/archive/master.tar.gz -P /sectools && \
 COPY src/ src/
 COPY lib/ lib/
 
+RUN addgroup -S nikto_group && adduser -S -g nikto_group nikto_user 
+USER nikto_user
+
 EXPOSE 8080
 
 ENTRYPOINT ["ruby","/sectools/src/main.rb"]
