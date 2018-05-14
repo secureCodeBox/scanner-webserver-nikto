@@ -17,16 +17,27 @@ class CamundaWorker
   attr_reader :started_tasks
   attr_reader :completed_tasks
   attr_reader :failed_tasks
+  attr_reader :camunda_url
+  attr_reader :start_time
+  attr_reader :last_connect
+  attr_reader :repository_url
+  attr_reader :branch
+  attr_reader :commit_id
 
   def initialize(camunda_url, topic, variables, task_lock_duration = 3600000, poll_interval = 5)
     @camunda_url = ENV.fetch('ENGINE_ADDRESS', camunda_url)
     @topic, @variables, @task_lock_duration = topic, variables, task_lock_duration
     @worker_id = SecureRandom.uuid
     @started_tasks, @completed_tasks, @failed_tasks = 0, 0, 0
+    @start_time = Time.now
+    @last_connect = "ERROR"
 
     @protected_engine = (ENV.has_key? 'ENGINE_BASIC_AUTH_USER') and (ENV.has_key? 'ENGINE_BASIC_AUTH_PASSWORD')
     @basic_auth_user = ENV.fetch('ENGINE_BASIC_AUTH_USER', '')
     @basic_auth_password = ENV.fetch('ENGINE_BASIC_AUTH_PASSWORD', '')
+    @repository_url = ENV.fetch('SCB_REPOSITORY_URL')
+    @branch = ENV.fetch('SCB_BRANCH')
+    @commit_id = ENV.fetch('SCB_COMMIT_ID')
 
     Thread.new do
       sleep poll_interval
@@ -47,7 +58,6 @@ class CamundaWorker
 
   def tick
     task = fetch_and_lock_task
-
     unless task.nil?
       @started_tasks = @started_tasks.succ
 
@@ -69,7 +79,6 @@ class CamundaWorker
         $logger.warn err
         $logger.warn err.backtrace
         $logger.warn "Task will be unlocked for further tries."
-
         @failed_tasks = @failed_tasks.succ
 
         self.fail_task job_id
@@ -85,18 +94,11 @@ class CamundaWorker
 
   def fetch_and_lock_task
     $logger.debug "fetching task"
-
-    begin
-      res = self.http_post("#{@camunda_url}/box/jobs/lock/#{@topic}/#{@worker_id}", "")
-
-      if res.nil?
-        nil
-      else
-        JSON.parse(res)
-      end
-    rescue => err
-      $logger.error err
+    res = self.http_post("#{@camunda_url}/box/jobs/lock/#{@topic}/#{@worker_id}", "")
+    if res.nil?
       nil
+    else
+      JSON.parse(res)
     end
   end
 
@@ -122,12 +124,15 @@ class CamundaWorker
         case response.code
         when 200, 201
           $logger.debug 'success ' + response.code.to_s
+          @last_connect = Time.now
           return response
         when 204
           $logger.debug 'success ' + response.code.to_s
+          @last_connect = Time.now
           return nil
         else
           $logger.debug "Invalid response #{response.to_str} received."
+          @last_connect = "ERROR"
           fail "Code #{response.code}: Invalid response #{response.to_str} received."
         end
       end
