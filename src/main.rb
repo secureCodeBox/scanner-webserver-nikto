@@ -53,9 +53,10 @@ def healthcheck(connection)
 end
 
 def scanner_test
-  scanner_running = system('perl /sectools/nikto-master/program/nikto.pl -Version')
-  if scanner_running
+  system('perl /sectools/nikto-master/program/nikto.pl -Version > /dev/null')
+  if $? == 0
     return "SUCCESSFULL"
-  end
+  else
     return "FAILED"
+  end
 end
