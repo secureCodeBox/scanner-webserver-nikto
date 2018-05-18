@@ -3,8 +3,6 @@ MAINTAINER Jannik.Hollenbach@iteratec.de
 
 RUN apk update && apk upgrade && apk add perl perl-net-ssleay make g++ openssl
 
-RUN gem install sinatra rest-client -N
-
 WORKDIR /sectools/
 
 RUN wget https://github.com/sullo/nikto/archive/master.tar.gz -P /sectools && \
@@ -13,6 +11,9 @@ RUN wget https://github.com/sullo/nikto/archive/master.tar.gz -P /sectools && \
 
 COPY src/ src/
 COPY lib/ lib/
+COPY Gemfile src/
+
+RUN bundle install --gemfile=/sectools/src/Gemfile
 
 RUN addgroup -S nikto_group && adduser -S -g nikto_group nikto_user
 USER nikto_user
