@@ -9,11 +9,12 @@ RUN wget https://github.com/sullo/nikto/archive/master.tar.gz -P /sectools && \
     tar zxvf /sectools/master.tar.gz -C /sectools && \
     rm /sectools/master.tar.gz
 
-COPY src/ src/
-COPY lib/ lib/
 COPY Gemfile src/
 
 RUN bundle install --gemfile=/sectools/src/Gemfile
+
+COPY src/ src/
+COPY lib/ lib/
 
 RUN addgroup -S nikto_group && adduser -S -g nikto_group nikto_user
 USER nikto_user
