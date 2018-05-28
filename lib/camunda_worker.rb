@@ -94,26 +94,38 @@ class CamundaWorker
 
   def fetch_and_lock_task
     $logger.debug "fetching task"
-    res = self.http_post("#{@camunda_url}/box/jobs/lock/#{@topic}/#{@worker_id}", "")
-    if res.nil?
-      nil
-    else
-      JSON.parse(res)
-    end
+	begin
+		res = self.http_post("#{@camunda_url}/box/jobs/lock/#{@topic}/#{@worker_id}", "")
+		if res.nil?
+			nil
+		else
+			JSON.parse(res)
+		end
+	rescue => e
+		nil
+	end
   end
 
   def fail_task(job_id)
-    result = self.http_post("#{@camunda_url}/rest/external-task/#{job_id}/unlock")
-    $logger.debug "unlocked task: " + result.to_str
-    result
+	  begin
+		  result = self.http_post("#{@camunda_url}/rest/external-task/#{job_id}/unlock")
+		  $logger.debug "unlocked task: " + result.to_str
+		  result
+	  rescue => e
+		  $logger.warn "Failed to submit failure for Job #{job_id} to the Engine."
+	  end
   end
 
   def complete_task(job_id, payload)
-    $logger.debug "completing task: #{payload.to_json}"
+	  begin
+		  $logger.debug "completing task: #{payload.to_json}"
 
-    result = self.http_post("#{@camunda_url}/box/jobs/#{job_id}/result", payload.to_json)
-    $logger.debug "completed task: #{result.to_str}"
-    result
+		  result = self.http_post("#{@camunda_url}/box/jobs/#{job_id}/result", payload.to_json)
+		  $logger.debug "completed task: #{result.to_str}"
+		  result
+	  rescue => e
+		  $logger.warn "Failed to submit scan result for Job #{job_id} to the Engine."
+	  end
   end
 
   def http_post(url, payload = "")
@@ -139,7 +151,7 @@ class CamundaWorker
     rescue => e
       $logger.debug "Error while connecting to #{url}"
       $logger.debug e.message
-      return nil
+      throw nil
     end
   end
 
