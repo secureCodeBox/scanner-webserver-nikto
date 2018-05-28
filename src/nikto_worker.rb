@@ -23,7 +23,7 @@ class NiktoWorker < CamundaWorker
 
     {
         findings: scans.flat_map{|scan| scan.results},
-        rawFindings: scans.map{|scan| scan.raw_results},
+        rawFindings: scans.map{|scan| scan.raw_results}.join(","),
         scannerId: @worker_id.to_s,
         scannerType: 'nikto'
     }
