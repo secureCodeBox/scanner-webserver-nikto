@@ -2,8 +2,12 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # About
+This repository contains a self contained µService utilizing the Nikto scanner for the secureCodeBox project.
 
-scanner-webserver-nikto is a self contained µService utilizing the Nikto Webserverscanner for the SecureCodeBox.
+Further Documentation:
+* [Project Description][scb-project]
+* [Developer Guide][scb-developer-guide]
+* [User Guide][scb-user-guide]
 
 ## Configuration Options
 
@@ -34,3 +38,9 @@ To run the testsuite run:
 To build the docker container run:
 
 `docker build -t CONTAINER_NAME .`
+
+
+[scb-project]:              https://github.com/secureCodeBox/secureCodeBox
+[scb-developer-guide]:      https://github.com/secureCodeBox/secureCodeBox/blob/develop/docs/developer-guide/README.md
+[scb-developer-guidelines]: https://github.com/secureCodeBox/secureCodeBox/blob/develop/docs/developer-guide/README.md#guidelines
+[scb-user-guide]:           https://github.com/secureCodeBox/secureCodeBox/tree/develop/docs/user-guide
