@@ -65,6 +65,7 @@ class NiktoScan
 		rescue => e
 			puts "Could not read result file"
 			puts e.message
+			raise CamundaIncident.new("Failed to read nikto result file from disk.", "The file either doesnt exist, the file is locked or the user lacks permission to open the file.")
 		end
 
 		# Replacing " with "" to ensure that they will always be in pairs
