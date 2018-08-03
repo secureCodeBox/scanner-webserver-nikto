@@ -166,7 +166,7 @@ class CamundaWorker
     rescue => e
       $logger.debug "Error while connecting to #{url}"
       $logger.debug e.message
-      throw nil
+      raise StandardError.new
     end
   end
 
