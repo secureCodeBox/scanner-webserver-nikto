@@ -15,7 +15,7 @@ client = NiktoWorker.new(
 get '/status' do
 
 	status 500
-	if (healthcheck(client.last_connect) == "UP")
+	if (scanner_test == "SUCCESSFUL")
 		status 200
 	end
 
@@ -46,7 +46,7 @@ get '/status' do
 end
 
 def healthcheck(connection)
-	if (connection != "ERROR" && scanner_test == "SUCCESSFULL")
+	if (connection != "ERROR" && scanner_test == "SUCCESSFUL")
 		return "UP"
 	end
 	return "DOWN"
@@ -55,7 +55,7 @@ end
 def scanner_test
 	system('perl /sectools/nikto-master/program/nikto.pl -Version > /dev/null')
 	if $? == 0
-		return "SUCCESSFULL"
+		return "SUCCESSFUL"
 	else
 		return "FAILED"
 	end
