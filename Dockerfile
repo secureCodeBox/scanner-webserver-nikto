@@ -1,12 +1,14 @@
 FROM ruby:alpine
 
-RUN apk update && apk upgrade && apk add perl perl-net-ssleay make g++ openssl
+RUN apk update && apk upgrade && apk add perl perl-net-ssleay make g++ openssl curl
 
 WORKDIR /sectools/
 
 RUN wget https://github.com/sullo/nikto/archive/master.tar.gz -P /sectools && \
     tar zxvf /sectools/master.tar.gz -C /sectools && \
     rm /sectools/master.tar.gz
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=3 CMD curl --fail http://localhost:8080/status || exit 1
 
 COPY Gemfile src/
 
