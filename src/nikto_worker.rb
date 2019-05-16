@@ -29,13 +29,6 @@ class NiktoWorker < CamundaWorker
 	end
 
 	def healthy?
-		if (self.last_connect != "ERROR" && scanner_test)
-			return "UP"
-		end
-		return "DOWN"
-	end
-
-	def scanner_test
 		system('perl /sectools/nikto-master/program/nikto.pl -Version > /dev/null')
 		$? == 0
 	end
