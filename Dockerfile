@@ -3,8 +3,11 @@ FROM ruby:alpine
 RUN apk update && apk upgrade && apk add perl perl-net-ssleay make g++ openssl curl
 
 WORKDIR /sectools/
+ADD Gemfile /sectools
 
 RUN wget https://github.com/sullo/nikto/archive/master.tar.gz -P /sectools && \
+	apk --update add git && \
+	bundle install && \
     tar zxvf /sectools/master.tar.gz -C /sectools && \
     rm /sectools/master.tar.gz
 
@@ -15,7 +18,6 @@ COPY Gemfile src/
 RUN bundle install --gemfile=/sectools/src/Gemfile
 
 COPY src/ src/
-COPY lib/ lib/
 
 RUN addgroup -S nikto_group && adduser -S -g nikto_group nikto_user
 USER nikto_user
