@@ -1,6 +1,5 @@
 require 'json'
-
-require_relative "../lib/camunda_worker"
+require 'ruby-scanner-scaffolding'
 
 require_relative "./nikto_scan"
 require_relative "./nikto_configuration"
@@ -27,5 +26,10 @@ class NiktoWorker < CamundaWorker
 			scannerId: @worker_id.to_s,
 			scannerType: 'nikto'
 		}
+	end
+
+	def healthy?
+		system('perl /sectools/nikto-master/program/nikto.pl -Version > /dev/null')
+		$? == 0
 	end
 end
