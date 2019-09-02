@@ -5,15 +5,13 @@ category: "scanner"
 
 ---
 
-[![Build Status](https://travis-ci.com/secureCodeBox/scanner-webserver-nikto.svg?branch=develop)](https://travis-ci.com/secureCodeBox/scanner-webserver-nikto)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GitHub release](https://img.shields.io/github/release/secureCodeBox/scanner-webserver-nikto.svg)](https://github.com/secureCodeBox/scanner-webserver-nikto/releases/latest)
+Nikto is a free software command-line vulnerability scanner that scans webservers for dangerous files/CGIs, outdated server software and other problems. It performs generic and server type specific checks. It also captures and prints any cookies received. 
+
+<!-- end -->
 
 # About
 
 This repository contains a self contained µService utilizing the Nikto scanner for the secureCodeBox project.
-
-<!-- end -->
 
 Further Documentation:
 
@@ -50,6 +48,12 @@ To run the testsuite run:
 To build the docker container run:
 
 `docker build -t CONTAINER_NAME .`
+
+
+[![Build Status](https://travis-ci.com/secureCodeBox/scanner-webserver-nikto.svg?branch=develop)](https://travis-ci.com/secureCodeBox/scanner-webserver-nikto)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![GitHub release](https://img.shields.io/github/release/secureCodeBox/scanner-webserver-nikto.svg)](https://github.com/secureCodeBox/scanner-webserver-nikto/releases/latest)
+
 
 [scb-project]: https://github.com/secureCodeBox/secureCodeBox
 [scb-developer-guide]: https://github.com/secureCodeBox/secureCodeBox/blob/develop/docs/developer-guide/README.md
