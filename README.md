@@ -1,5 +1,7 @@
 ---
-title: Nikto
+title: "Nikto"
+path: "scanner/Nikto"
+category: "scanner"
 
 ---
 
