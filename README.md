@@ -1,3 +1,8 @@
+---
+title: Nikto
+
+---
+
 [![Build Status](https://travis-ci.com/secureCodeBox/scanner-webserver-nikto.svg?branch=develop)](https://travis-ci.com/secureCodeBox/scanner-webserver-nikto)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub release](https://img.shields.io/github/release/secureCodeBox/scanner-webserver-nikto.svg)](https://github.com/secureCodeBox/scanner-webserver-nikto/releases/latest)
