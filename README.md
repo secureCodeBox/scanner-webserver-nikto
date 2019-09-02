@@ -13,6 +13,8 @@ category: "scanner"
 
 This repository contains a self contained µService utilizing the Nikto scanner for the secureCodeBox project.
 
+<!-- end -->
+
 Further Documentation:
 
 - [Project Description][scb-project]
