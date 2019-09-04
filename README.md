@@ -2,6 +2,7 @@
 title: "Nikto"
 path: "scanner/Nikto"
 category: "scanner"
+usecase: "Webserver Vulnerability Scanner" 
 
 ---
 
