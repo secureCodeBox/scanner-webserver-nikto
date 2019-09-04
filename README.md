@@ -2,7 +2,8 @@
 title: "Nikto"
 path: "scanner/Nikto"
 category: "scanner"
-usecase: "Webserver Vulnerability Scanner" 
+usecase: "Webserver Vulnerability Scanner"
+release: "https://img.shields.io/github/release/secureCodeBox/scanner-webserver-nikto.svg"
 
 ---
 
