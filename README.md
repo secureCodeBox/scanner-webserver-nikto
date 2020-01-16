@@ -1,11 +1,12 @@
 ---
-
 title: "Nikto"
 path: "scanner/Nikto"
 category: "scanner"
 usecase: "Webserver Vulnerability Scanner"
 release: "https://img.shields.io/github/release/secureCodeBox/scanner-webserver-nikto.svg"
----![nikto logo](https://cirt.net/files/alienlogo_3.gif)
+---
+
+![nikto logo](https://cirt.net/files/alienlogo_3.gif)
 
 Nikto is a free software command-line vulnerability scanner that scans webservers for dangerous files/CGIs, outdated server software and other problems. It performs generic and server type specific checks. It also captures and prints any cookies received.
 
