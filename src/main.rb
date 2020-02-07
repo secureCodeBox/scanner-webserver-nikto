@@ -9,6 +9,8 @@ require_relative "./nikto_worker"
 set :port, 8080
 set :bind, '0.0.0.0'
 set :environment, :production
+set :server, 'thin'
+disable :logging, :static, :show_exceptions
 
 client = NiktoWorker.new(
 	'http://localhost:8080',
