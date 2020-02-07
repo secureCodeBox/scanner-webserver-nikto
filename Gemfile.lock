@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/secureCodeBox/ruby-scanner-scaffolding.git
-  revision: fff6c92edffb1f55bde432156ffd60c38c034e49
-  tag: v1.0.0
+  revision: 66241b119a266bd1a3db3a0c677061505d1fcb12
+  tag: v1.1.0
   specs:
     ruby-scanner-scaffolding (1.0.0)
 
