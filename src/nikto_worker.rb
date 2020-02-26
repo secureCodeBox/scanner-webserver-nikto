@@ -32,4 +32,9 @@ class NiktoWorker < CamundaWorker
 		system('perl /sectools/nikto-master/program/nikto.pl -Version > /dev/null')
 		$? == 0
 	end
+
+	def version
+		# Nikto unfortunatly doesn't provide any proper versioning...
+		"latest"
+	end
 end
