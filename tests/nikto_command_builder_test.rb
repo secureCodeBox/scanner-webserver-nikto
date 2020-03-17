@@ -27,7 +27,7 @@ class NiktoCommandBuilderTest < Test::Unit::TestCase
 
     assert_equal(
         cmd.build,
-        'perl /sectools/nikto-master/program/nikto.pl -F csv -o /tmp/report-49bf7fd3-8512-4d73-a28f-608e493cd726.csv -h localhost'
+        'perl /sectools/nikto-master/program/nikto.pl -F csv -o /tmp/report-49bf7fd3-8512-4d73-a28f-608e493cd726.csv -h "localhost"'
     )
   end
 
@@ -37,7 +37,7 @@ class NiktoCommandBuilderTest < Test::Unit::TestCase
 
     assert_equal(
         cmd.build,
-        'perl /sectools/nikto-master/program/nikto.pl -F csv -o /tmp/report-49bf7fd3-8512-4d73-a28f-608e493cd726.csv -h localhost -p 8080'
+        'perl /sectools/nikto-master/program/nikto.pl -F csv -o /tmp/report-49bf7fd3-8512-4d73-a28f-608e493cd726.csv -h "localhost" -p 8080'
     )
   end
 
@@ -47,7 +47,7 @@ class NiktoCommandBuilderTest < Test::Unit::TestCase
 
     assert_equal(
         cmd.build,
-        'perl /sectools/nikto-master/program/nikto.pl -F csv -o /tmp/report-49bf7fd3-8512-4d73-a28f-608e493cd726.csv -h localhost -nossl'
+        'perl /sectools/nikto-master/program/nikto.pl -F csv -o /tmp/report-49bf7fd3-8512-4d73-a28f-608e493cd726.csv -h "localhost" -nossl'
     )
   end
 end
